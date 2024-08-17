@@ -36,8 +36,13 @@ jobs:
     needs: Deploy-Preview
     runs-on: ubuntu-latest
     steps:
-      - name: Debug
-        run: echo ${{ needs.Deploy-Preview.outputs.preview-url }}
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm ci && npx playwright install --with-deps
+      - name: Run tests
+        run: npx playwright test
+        env:
+          BASE_URL: ${{ needs.Deploy-Preview.outputs.preview-url }}
   Deploy-Production:
     needs: E2e-Test
     runs-on: ubuntu-latest
