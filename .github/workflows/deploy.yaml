@@ -28,13 +28,16 @@ jobs:
       - name: Build Project Artifacts
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+        id: preview
+        run: echo "url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})" >> "${GITHUB_OUTPUT}"
+    outputs:
+      preview-url: ${{ steps.preview.outputs.url }}
   E2e-Test:
     needs: Deploy-Preview
     runs-on: ubuntu-latest
     steps:
       - name: Debug
-        run: echo ${{ github.event.deployment_status.environment_url }}
+        run: echo ${{ needs.Deploy-Preview.outputs.preview-url }}
   Deploy-Production:
     needs: E2e-Test
     runs-on: ubuntu-latest
