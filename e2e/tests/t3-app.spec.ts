@@ -11,27 +11,12 @@ test('has title', async ({ page }) => {
 test("ログイン状態でアクセスすると、ユーザ情報が表示される", async ({
   browser,
 }) => {
-  // const cookie = await page.context().cookies('http://localhost')
-  // console.log(cookie)
+  const DUMMY_TOKEN = crypto.randomUUID()
+  
   const prisma = new PrismaClient();
-  // あらかじめSessionテーブルにテストユーザと紐づくレコードを作成しておく
-  const existingRecord = await prisma.session.findUnique({
-    where: {
-      sessionToken: "dummy"
-    },
-  });
-    
-  if (existingRecord) {
-    await prisma.session.delete({
-      where: {
-        sessionToken: "dummy"
-      },
-    });
-  }
-
   await prisma.session.create({
     data: {
-      sessionToken: "dummy",
+      sessionToken: DUMMY_TOKEN,
       userId: "1",
       expires: new Date(new Date().getTime() + 86400),
     },
@@ -41,7 +26,7 @@ test("ログイン状態でアクセスすると、ユーザ情報が表示さ�
   await context.addCookies([
     {
       name: 'next-auth.session-token',
-      value: 'dummy',
+      value: DUMMY_TOKEN,
       domain: 'localhost:3000',
       path: '/',
       httpOnly: true,
@@ -52,7 +37,15 @@ test("ログイン状態でアクセスすると、ユーザ情報が表示さ�
   // ログインしていないとアクセスできないページのテストをする
   const page = await context.newPage();
 
+  console.log('process.env.BASE_URL:', process.env.BASE_URL)
+
   await page.goto('/');
   // await page.getByRole('link', { name: /Sign in/i }).click();
   await page.waitForTimeout(1000);
+
+  await prisma.session.delete({
+    where: {
+      sessionToken: DUMMY_TOKEN
+    },
+  });
 });
