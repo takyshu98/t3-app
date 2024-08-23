@@ -27,7 +27,7 @@ test("ログイン状態でアクセスすると、ユーザ情報が表示さ�
     {
       name: 'next-auth.session-token',
       value: DUMMY_TOKEN,
-      domain: 'localhost:3000',
+      domain: 'localhost',
       path: '/',
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -38,6 +38,8 @@ test("ログイン状態でアクセスすると、ユーザ情報が表示さ�
   const page = await context.newPage();
 
   console.log('process.env.BASE_URL:', process.env.BASE_URL)
+  const cookie = await page.context().cookies('http://localhost')
+  console.log(cookie)
 
   await page.goto('/');
   // await page.getByRole('link', { name: /Sign in/i }).click();
