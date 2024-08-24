@@ -27,14 +27,13 @@ test("ログイン状態でアクセスすると、ユーザ情報が表示さ�
     {
       name: 'next-auth.session-token',
       value: DUMMY_TOKEN,
-      domain: 'localhost',
+      domain: process.env.BASE_URL ? new URL(process.env.BASE_URL).hostname : 'localhost',
       path: '/',
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: Boolean(process.env.CI),
     },
   ]);
 
-  // ログインしていないとアクセスできないページのテストをする
   const page = await context.newPage();
 
   console.log('process.env.BASE_URL:', process.env.BASE_URL)
@@ -43,7 +42,6 @@ test("ログイン状態でアクセスすると、ユーザ情報が表示さ�
 
   await page.goto('/');
   // await page.getByRole('link', { name: /Sign in/i }).click();
-  await page.waitForTimeout(1000);
 
   await prisma.session.delete({
     where: {
