@@ -16,7 +16,7 @@ vi.mock('~/trpc/react', () => ({
         useSuspenseQuery: mockUseSuspenseQuery,
       },
       create: {
-        useMutation: vi.fn((callback) => ({
+        useMutation: vi.fn((callback: { onSuccess: Function }) => ({
           mutate: (newData: { name: string }) => mockMutate(newData, callback),
           isPending: mockIsPending,
         })),
