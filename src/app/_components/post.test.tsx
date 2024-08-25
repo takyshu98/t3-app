@@ -5,7 +5,7 @@ import "@testing-library/jest-dom/vitest";
 import { LatestPost } from './post';
 
 const mockUseSuspenseQuery = vi.hoisted(() => vi.fn());
-const mockMutate = vi.fn((newData: { name: string }, callback: { onSuccess: Function }) => { callback.onSuccess(); });
+const mockMutate = vi.fn((newData: { name: string }, callback: { onSuccess: () => Promise<void> }) => { callback.onSuccess(); });
 let mockIsPending = false;
 const mockInvalidate = vi.fn();
 
@@ -16,7 +16,7 @@ vi.mock('~/trpc/react', () => ({
         useSuspenseQuery: mockUseSuspenseQuery,
       },
       create: {
-        useMutation: vi.fn((callback: { onSuccess: Function }) => ({
+        useMutation: vi.fn((callback: { onSuccess: () => Promise<void> }) => ({
           mutate: (newData: { name: string }) => mockMutate(newData, callback),
           isPending: mockIsPending,
         })),
