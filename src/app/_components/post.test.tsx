@@ -4,6 +4,9 @@ import userEvent from '@testing-library/user-event'
 import "@testing-library/jest-dom/vitest";
 import { LatestPost } from './post';
 
+/* eslint-disable @typescript-eslint/@typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 const mockUseSuspenseQuery = vi.hoisted(() => vi.fn());
 const mockMutate = vi.fn((newData: { name: string }, callback: { onSuccess: () => Promise<void> }) => { callback.onSuccess(); });
 let mockIsPending = false;
