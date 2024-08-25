@@ -17,7 +17,7 @@ vi.mock('~/trpc/react', () => ({
       },
       create: {
         useMutation: vi.fn((callback) => ({
-          mutate: (newData: Object) => mockMutate(newData, callback),
+          mutate: (newData: { name: string }) => mockMutate(newData, callback),
           isPending: mockIsPending,
         })),
       },
