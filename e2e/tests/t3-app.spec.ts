@@ -6,7 +6,7 @@ test('has title', async ({ page }) => {
 
   // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle(/Create T3 App/);
-  await page.getByRole('link', { name: /Sign in/i }).isVisible();
+  await page.getByRole('link', { name: /Sign in/ }).isVisible();
 });
 
 test("ログイン状態でアクセスすると、ユーザ情報が表示される", async ({
@@ -36,13 +36,10 @@ test("ログイン状態でアクセスすると、ユーザ情報が表示さ�
   ]);
 
   const page = await context.newPage();
-
-  console.log('process.env.BASE_URL:', process.env.BASE_URL)
-  const cookie = await page.context().cookies(process.env.BASE_URL || 'http://localhost')
-  console.log(cookie)
-
   await page.goto('/');
-  await page.getByRole('link', { name: /Sign out/i }).isVisible();
+
+  await expect(page).toHaveTitle(/Create T3 App/);
+  await page.getByRole('link', { name: /Sign out/ }).isVisible();
 
   await prisma.session.delete({
     where: {
