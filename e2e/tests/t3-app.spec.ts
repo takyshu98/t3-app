@@ -42,11 +42,12 @@ test("ログイン済みの状態でアクセスすると、ユーザ情報が�
   const page = await context.newPage();
   await page.goto("/");
 
+  const cookie = await page.context().cookies();
+  console.log(cookie);
+
   await expect(page).toHaveTitle(/Create T3 App/);
   await expect(page.getByText(/Logged in as test/)).toBeVisible();
   await page.getByRole("link", { name: /Sign out/ }).isVisible();
-  const html = await page.innerHTML("body");
-  console.log(html);
 
   await prisma.session.delete({
     where: {
