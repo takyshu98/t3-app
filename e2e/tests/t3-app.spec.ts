@@ -31,12 +31,12 @@ test("ログイン済みの状態でアクセスすると、ユーザ情報が�
       name: "next-auth.session-token",
       value: DUMMY_TOKEN,
       domain: process.env.BASE_URL
-        ? // ? new URL(process.env.BASE_URL).hostname
-          ".vercel.app"
+        ? new URL(process.env.BASE_URL).hostname
         : "localhost",
       path: "/",
       httpOnly: true,
       secure: Boolean(process.env.CI),
+      sameSite: process.env.BASE_URL ? "None" : "Lax",
     },
   ]);
 
