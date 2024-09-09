@@ -1,16 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom/vitest";
+import { userEvent } from "@testing-library/user-event";
+import "@testing-library/jest-dom";
 import { LatestPost } from "./post";
-
-/* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 const mockUseSuspenseQuery = vi.hoisted(() => vi.fn());
 const mockMutate = vi.fn(
-  (newData: { name: string }, callback: { onSuccess: () => Promise<void> }) => {
-    callback.onSuccess();
+  async (
+    newData: { name: string },
+    callback: { onSuccess: () => Promise<void> },
+  ) => {
+    await callback.onSuccess();
   },
 );
 let mockIsPending = false;
@@ -81,6 +81,7 @@ describe("LatestPost", () => {
     expect(mockMutate).toHaveBeenCalledTimes(1);
     expect(mockMutate).toHaveBeenCalledWith(
       expect.objectContaining({ name: "New Post" }),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       expect.objectContaining({ onSuccess: expect.any(Function) }),
     );
     expect(mockInvalidate).toHaveBeenCalledTimes(1);
