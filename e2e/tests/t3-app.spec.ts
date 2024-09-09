@@ -31,7 +31,8 @@ test("ログイン済みの状態でアクセスすると、ユーザ情報が�
       name: "next-auth.session-token",
       value: DUMMY_TOKEN,
       domain: process.env.BASE_URL
-        ? new URL(process.env.BASE_URL).hostname
+        ? // ? new URL(process.env.BASE_URL).hostname
+          ".vercel.app"
         : "localhost",
       path: "/",
       httpOnly: true,
