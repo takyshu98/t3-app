@@ -36,7 +36,8 @@ test("ログイン済みの状態でアクセスすると、ユーザ情報が�
       path: "/",
       httpOnly: true,
       secure: Boolean(process.env.CI),
-      sameSite: process.env.BASE_URL ? "None" : "Lax",
+      // sameSite: process.env.BASE_URL ? "None" : "Lax",
+      sameSite: "Lax",
     },
   ]);
 
