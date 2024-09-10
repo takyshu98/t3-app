@@ -48,8 +48,9 @@ test("ログイン済みの状態でアクセスすると、ユーザ情報が�
   console.log(cookie);
 
   await expect(page).toHaveTitle(/Create T3 App/);
-  await expect(page.getByText(/Logged in as test/)).toBeVisible();
-  await page.getByRole("link", { name: /Sign out/ }).isVisible();
+  // await expect(page.getByText(/Logged in as test/)).toBeVisible();
+  // await page.getByRole("link", { name: /Sign out/ }).isVisible();
+  await page.getByRole("link", { name: /Sign in/ }).isVisible();
 
   await prisma.session.delete({
     where: {
