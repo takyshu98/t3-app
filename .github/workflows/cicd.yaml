@@ -67,7 +67,6 @@ jobs:
         env:
           NODE_ENV: development
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          NEXTAUTH_URL: ${{ needs.Deploy-Preview.outputs.preview-url }}
           BASE_URL: ${{ needs.Deploy-Preview.outputs.preview-url }}
       - uses: actions/upload-artifact@v4
         if: always()
