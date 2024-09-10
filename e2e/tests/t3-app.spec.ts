@@ -28,8 +28,9 @@ test("ログイン済みの状態でアクセスすると、ユーザ情報が�
   const context = await browser.newContext();
   await context.addCookies([
     {
-      name: "__Secure-next-auth.session-token",
-      // name: "next-auth.session-token",
+      name: Boolean(process.env.CI)
+        ? "__Secure-next-auth.session-token"
+        : "next-auth.session-token",
       value: DUMMY_TOKEN,
       domain: process.env.BASE_URL
         ? new URL(process.env.BASE_URL).hostname
@@ -37,7 +38,6 @@ test("ログイン済みの状態でアクセスすると、ユーザ情報が�
       path: "/",
       httpOnly: true,
       secure: Boolean(process.env.CI),
-      // sameSite: process.env.BASE_URL ? "None" : "Lax",
       sameSite: "Lax",
     },
   ]);
@@ -49,7 +49,7 @@ test("ログイン済みの状態でアクセスすると、ユーザ情報が�
   console.log(cookie);
 
   await expect(page).toHaveTitle(/Create T3 App/);
-  // await expect(page.getByText(/Logged in as test/)).toBeVisible();
+  await expect(page.getByText(/Logged in as test/)).toBeVisible();
   await page.getByRole("link", { name: /Sign out/ }).isVisible();
 
   await prisma.session.delete({

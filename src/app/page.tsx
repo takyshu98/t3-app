@@ -8,8 +8,6 @@ export default async function Home() {
   const hello = await api.post.hello({ text: "from tRPC" });
   const session = await getServerAuthSession();
 
-  console.log("session", session);
-
   void api.post.getLatest.prefetch();
 
   return (
