@@ -62,6 +62,17 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      */
   ],
+  logger: {
+    error(code, metadata) {
+      console.error("error", code, metadata);
+    },
+    warn(code) {
+      console.warn("warn", code);
+    },
+    debug(code, metadata) {
+      console.debug("debug", code, metadata);
+    },
+  },
 };
 
 /**
