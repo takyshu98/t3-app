@@ -28,7 +28,8 @@ test("ログイン済みの状態でアクセスすると、ユーザ情報が�
   const context = await browser.newContext();
   await context.addCookies([
     {
-      name: "next-auth.session-token",
+      name: "__Secure-next-auth.session-token",
+      // name: "next-auth.session-token",
       value: DUMMY_TOKEN,
       domain: process.env.BASE_URL
         ? new URL(process.env.BASE_URL).hostname
